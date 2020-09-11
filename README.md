@@ -26,7 +26,7 @@ npm install vue-page-navigation
 
 ``` js
 import Vue from 'vue'
-import VuePageNavigation from '@/murphy/vue-page-navigation';
+import VuePageNavigation from '@murphy/vue-page-navigation';
 
 // vue-router实例必须传入
 Vue.use(VuePageNavigation, { router });
@@ -86,10 +86,6 @@ Vue.use(VuePageNavigation, { router, name: 'VuePageNavigation', keyName: 'PNK' }
 ### keyName
 
 为什么会给路由添加`keyName`这个参数，是为了支持浏览器的后退，前进事件，这个特性在 webApp,微信公众号和小程序很重要
-
-### 更新日志
-
-主要的更新日志在 [release notes](https://github.com/hezhongfeng/vue-page-stack/releases)
 
 ### 原理
 
