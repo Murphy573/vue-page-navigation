@@ -48,15 +48,13 @@
     "vue-router": "^3.2.0",
     "vue-template-compiler": "^2.6.11"
   },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
   "lint-staged": {
-    "*.{js,jsx,vue}": [
+    "*.{js,vue}": [
       "vue-cli-service lint",
       "git add"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }
