@@ -26,7 +26,7 @@ npm install vue-page-navigation
 
 ``` js
 import Vue from 'vue'
-import VuePageNavigation from '@murphy/vue-page-navigation';
+import VuePageNavigation from 'vue-page-navigation';
 
 // vue-router实例必须传入
 Vue.use(VuePageNavigation, { router });

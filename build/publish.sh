@@ -13,6 +13,6 @@ npm config set registry=http://registry.npmjs.org
 npm run build:lib
 
 # 执行npm发布
-npm publish
+npm publish --access public
 
 # cd -
