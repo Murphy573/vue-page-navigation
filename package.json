@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Murphy573/vue-admin-template.git"
+    "url": "git+https://github.com/Murphy573/vue-page-navigation.git"
   },
   "bugs": {
     "url": "https://github.com/Murphy573/vue-admin-template/issues"
@@ -40,21 +40,10 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
-    "husky": "^4.3.0",
-    "lint-staged": "^10.3.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue-template-compiler": "^2.6.11"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "examples/**/*.{js,vue}": [
-      "vue-cli-service lint",
-      "git add"
-    ]
   }
 }
