@@ -32,7 +32,7 @@ import VuePageNavigation from 'vue-page-navigation';
 Vue.use(VuePageNavigation, { router });
 ```
 
-```
+``` vue
 // App.vue
 <template>
   <div id="app">
@@ -46,7 +46,7 @@ Vue.use(VuePageNavigation, { router });
 use `Vue.use` to install `vue-page-navigation
 使用之前需要注册插件
 
-```
+``` js
 Vue.use(VuePageNavigation, options);
 ```
 
