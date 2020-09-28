@@ -32,7 +32,9 @@ module.exports = {
         // git版本回滚
         'revert',
         // 构建过程或辅助工具的变动：npm webpack
-        'chore'
+        'chore',
+        // 发布
+        'publish'
       ]
     ],
     // 0:disable 1:warning  2:error

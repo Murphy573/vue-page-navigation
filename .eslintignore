@@ -4,3 +4,4 @@ node_modules
 *.woff
 *.ttf
 src/assets
+lib
