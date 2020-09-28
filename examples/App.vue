@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-      <VuePageNavigation :include="include">
+      <VuePageNavigation :include="include"
+        :exclude="exclude">
         <router-view />
       </VuePageNavigation>
     </transition>
@@ -22,7 +23,8 @@ export default {
   data () {
     return {
       transitionName: 'van-fade',
-      include: ['Page1']
+      include: ['Page1'],
+      exclude: ['Page4']
     };
   }
 };

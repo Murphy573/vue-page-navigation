@@ -65,7 +65,7 @@ function pruneCache (keepAliveInstance, filter) {
 function pruneCacheEntry (cache, key, keys) {
   if (!key) return;
   const cached = cache[key];
-  if (cached) {
+  if (cached && cached.componentInstance) {
     cached.componentInstance.$destroy();
   }
   cache[key] = null;
@@ -128,6 +128,10 @@ let VuePageNavigation = keyName => {
 
         // 如果匹配到不包含或者组件名称未提供，则直接返回vnode
         if (!name || (exclude && matches(exclude, name))) {
+          // FIX: 解决exclude遇上replace时且页面刷新，组件历史没有，导致取的空的索引值
+          keys.push(key);
+          cache[key] = {};
+
           return vnode;
         }
         else {

@@ -3,7 +3,8 @@
     <h3>页面4</h3>
     输入框：<input v-model="input" />
     <p>
-      <router-link to="/page1">跳转到page1</router-link>
+      <router-link to="/page1"
+        replace>replace到page1</router-link>
     </p>
     <p>
       <span @click="$router.back()">返回到page2</span>
