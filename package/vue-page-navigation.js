@@ -124,13 +124,23 @@ let VuePageNavigation = keyName => {
 
         // 如果匹配到不包含或者组件名称未提供，则直接返回vnode
         if (!name || (exclude && matches(exclude, name))) {
-          if (history.action === config.replaceName && keys.length) {
-            pruneCacheEntry(cache, keys[keys.length - 1], keys);
+          if (!cache[key]) {
+            if (history.action === config.replaceName && keys.length) {
+              pruneCacheEntry(cache, keys[keys.length - 1], keys);
+            }
+            cache[key] = {};
+            keys.push(key);
           }
-
-          cache[key] = {};
-          keys.push(key);
-          return vnode;
+          else {
+            // 删除当前key的索引之后的缓存
+            let index = getIndexByKey(keys, key);
+            for (let i = keys.length - 1; i > index; i--) {
+              let _name = getComponentName(cache[keys[i]].componentOptions);
+              if (!_name || !matches(include, _name)) {
+                pruneCacheEntry(cache, keys[i], keys);
+              }
+            }
+          }
         }
         else {
           // 从缓存中匹配name，include的始终缓存
@@ -148,12 +158,12 @@ let VuePageNavigation = keyName => {
           }
 
           if (cache[key]) {
-            let index = getIndexByKey(keys, key);
             vnode.componentInstance = cache[key].componentInstance;
             // 删除当前key的索引之后的缓存
+            let index = getIndexByKey(keys, key);
             for (let i = keys.length - 1; i > index; i--) {
               let _name = getComponentName(cache[keys[i]].componentOptions);
-              if (!matches(include, _name)) {
+              if (!_name || !matches(include, _name)) {
                 pruneCacheEntry(cache, keys[i], keys);
               }
             }
@@ -183,16 +193,16 @@ let VuePageNavigation = keyName => {
             if (this.max && keys.length > parseInt(this.max)) {
               pruneCacheEntry(cache, keys[0], keys);
             }
+          }
+        }
 
-            // 删除多余缓存，例如：push:::A->B->C->B->C，那么当跳转到第二个B时，第一个B还在缓存状态
-            for (let cacheKey in cache) {
-              let _name = getComponentName(cache[cacheKey].componentOptions);
-              // 如果组件名称一致，那么替换缓存中的key
-              if (_name === name && key !== cacheKey) {
-                pruneCacheEntry(cache, cacheKey, keys);
-                break;
-              }
-            }
+        // 删除多余缓存，例如：push:::A->B->C->B->C，那么当跳转到第二个B时，第一个B还在缓存状态
+        for (let cacheKey in cache) {
+          let _name = getComponentName(cache[cacheKey].componentOptions);
+          // 如果组件名称一致，那么替换缓存中的key
+          if (_name === name && key !== cacheKey) {
+            pruneCacheEntry(cache, cacheKey, keys);
+            break;
           }
         }
 
