@@ -19,7 +19,7 @@ export function isDef (v) {
 /**
  * 从数组中移除一个元素
  * @param {Array} arr
- * @param {Any} item
+ * @param {Any} item 要删除的元素
  * @returns {Any} 移除的元素
  */
 export function remove (arr, item) {
@@ -34,7 +34,8 @@ export function remove (arr, item) {
 /**
  * 从数组中移除一个元素，并以新元素替换
  * @param {Array} arr
- * @param {Any} item
+ * @param {Any} oldItem 要删除的元素
+ * @param {Any} newItem 添加到删除位置的新元素
  * @returns {Any} 移除的元素
  */
 export function splice (arr, oldItem, newItem) {

@@ -24,7 +24,7 @@ export default {
     return {
       transitionName: 'van-fade',
       include: ['Page1'],
-      exclude: ['Page4']
+      exclude: ['Page3', 'Page4']
     };
   }
 };

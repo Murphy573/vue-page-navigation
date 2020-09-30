@@ -55,7 +55,7 @@ function pruneCache (keepAliveInstance, filter) {
     const cachedNode = cache[key];
     if (cachedNode) {
       const name = getComponentName(cachedNode.componentOptions);
-      if (name && !filter(name)) {
+      if (!filter(name)) {
         pruneCacheEntry(cache, key, keys);
       }
     }
@@ -80,10 +80,6 @@ let VuePageNavigation = keyName => {
     name: config.componentName,
 
     abstract: true,
-
-    data () {
-      return {};
-    },
 
     props: {
       include: patternTypes,
@@ -128,10 +124,12 @@ let VuePageNavigation = keyName => {
 
         // 如果匹配到不包含或者组件名称未提供，则直接返回vnode
         if (!name || (exclude && matches(exclude, name))) {
-          // FIX: 解决exclude遇上replace时且页面刷新，组件历史没有，导致取的空的索引值
-          keys.push(key);
-          cache[key] = {};
+          if (history.action === config.replaceName && keys.length) {
+            pruneCacheEntry(cache, keys[keys.length - 1], keys);
+          }
 
+          cache[key] = {};
+          keys.push(key);
           return vnode;
         }
         else {
@@ -154,14 +152,14 @@ let VuePageNavigation = keyName => {
             vnode.componentInstance = cache[key].componentInstance;
             // 删除当前key的索引之后的缓存
             for (let i = keys.length - 1; i > index; i--) {
-              let _componentName = getComponentName(cache[keys[i]].componentOptions);
-              if (!matches(include, _componentName)) {
+              let _name = getComponentName(cache[keys[i]].componentOptions);
+              if (!matches(include, _name)) {
                 pruneCacheEntry(cache, keys[i], keys);
               }
             }
           }
           else {
-            if (history.action === config.replaceName) {
+            if (history.action === config.replaceName && keys.length) {
               let _curKey = keys[keys.length - 1],
                 _name = getComponentName(cache[_curKey].componentOptions);
               // replace：如果组件没变，仅替换缓存中的key
