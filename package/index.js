@@ -2,7 +2,7 @@ import VuePageNavigation from './vue-page-navigation';
 import mixin from './mixin';
 import history from './history';
 import config from './config';
-import { genKey, hasKey } from './util';
+import { genKey, hasKey, buildRouteData, deepCompare } from './util';
 
 const VuePageNavigationPlugin = {
   install (Vue, { router, name = config.componentName, keyName = config.keyName }) {
@@ -14,6 +14,14 @@ const VuePageNavigationPlugin = {
     mixin(router);
 
     function beforeEach (to, from, next) {
+      // 对比路由跳转信息，完全相同的不执行跳转
+      let _toRouteInfo = buildRouteData(to);
+      let _fromRouteInfo = buildRouteData(from);
+      if (deepCompare(_toRouteInfo, _fromRouteInfo)) {
+        next(false);
+        return;
+      }
+
       if (!hasKey(to.query, keyName)) {
         to.query[keyName] = genKey();
         let replace = history.action === config.replaceName || !hasKey(from.query, keyName);

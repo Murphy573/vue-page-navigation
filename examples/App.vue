@@ -23,8 +23,8 @@ export default {
   data () {
     return {
       transitionName: 'van-fade',
-      include: ['Page1'],
-      exclude: ['Page3', 'Page4']
+      include: [],
+      exclude: ['Page4']
     };
   }
 };

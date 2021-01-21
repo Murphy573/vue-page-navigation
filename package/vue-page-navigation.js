@@ -49,18 +49,18 @@ function matches (pattern, name) {
   return false;
 }
 
-function pruneCache (keepAliveInstance, filter) {
-  const { cache, keys } = keepAliveInstance;
-  for (const key in cache) {
-    const cachedNode = cache[key];
-    if (cachedNode) {
-      const name = getComponentName(cachedNode.componentOptions);
-      if (!filter(name)) {
-        pruneCacheEntry(cache, key, keys);
-      }
-    }
-  }
-}
+// function pruneCache (keepAliveInstance, filter) {
+//   const { cache, keys } = keepAliveInstance;
+//   for (const key in cache) {
+//     const cachedNode = cache[key];
+//     if (cachedNode) {
+//       const name = getComponentName(cachedNode.componentOptions);
+//       if (!filter(name)) {
+//         pruneCacheEntry(cache, key, keys);
+//       }
+//     }
+//   }
+// }
 
 function pruneCacheEntry (cache, key, keys) {
   if (!key) return;
@@ -104,12 +104,12 @@ let VuePageNavigation = keyName => {
     },
 
     mounted () {
-      this.$watch('include', (val) => {
-        pruneCache(this, (name) => matches(val, name));
-      });
-      this.$watch('exclude', (val) => {
-        pruneCache(this, (name) => !matches(val, name));
-      });
+      // this.$watch('include', (val) => {
+      //   pruneCache(this, (name) => matches(val, name));
+      // });
+      // this.$watch('exclude', (val) => {
+      //   pruneCache(this, (name) => !matches(val, name));
+      // });
     },
 
     render () {
@@ -123,7 +123,7 @@ let VuePageNavigation = keyName => {
         const { include, exclude, cache, keys } = this;
 
         // 如果匹配到不包含或者组件名称未提供，则直接返回vnode
-        if (!name || (exclude && matches(exclude, name))) {
+        if (exclude && matches(exclude, name)) {
           if (!cache[key]) {
             if (history.action === config.replaceName && keys.length) {
               pruneCacheEntry(cache, keys[keys.length - 1], keys);
@@ -136,7 +136,8 @@ let VuePageNavigation = keyName => {
             let index = getIndexByKey(keys, key);
             for (let i = keys.length - 1; i > index; i--) {
               let _name = getComponentName(cache[keys[i]].componentOptions);
-              if (!_name || !matches(include, _name)) {
+              // 跳过永远include缓存的
+              if (!matches(include, _name)) {
                 pruneCacheEntry(cache, keys[i], keys);
               }
             }
@@ -156,14 +157,14 @@ let VuePageNavigation = keyName => {
               }
             }
           }
-
+          // debugger;
           if (cache[key]) {
             vnode.componentInstance = cache[key].componentInstance;
             // 删除当前key的索引之后的缓存
             let index = getIndexByKey(keys, key);
             for (let i = keys.length - 1; i > index; i--) {
               let _name = getComponentName(cache[keys[i]].componentOptions);
-              if (!_name || !matches(include, _name)) {
+              if (!matches(include, _name)) {
                 pruneCacheEntry(cache, keys[i], keys);
               }
             }
@@ -185,6 +186,9 @@ let VuePageNavigation = keyName => {
               }
             }
             else {
+              vnode.key += '__' + key;
+              // vnode.componentOptions.Ctor.prototype.$forceUpdate();
+              // vnode.componentOptions.Ctor.prototype.$destroy();
               cache[key] = vnode;
               keys.push(key);
             }
@@ -197,14 +201,17 @@ let VuePageNavigation = keyName => {
         }
 
         // 删除多余缓存，例如：push:::A->B->C->B->C，那么当跳转到第二个B时，第一个B还在缓存状态
-        for (let cacheKey in cache) {
-          let _name = getComponentName(cache[cacheKey].componentOptions);
-          // 如果组件名称一致，那么替换缓存中的key
-          if (_name === name && key !== cacheKey) {
-            pruneCacheEntry(cache, cacheKey, keys);
-            break;
-          }
-        }
+        // for (let cacheKey in cache) {
+        //   let _name = getComponentName(cache[cacheKey].componentOptions);
+        //   // 如果组件名称一致，那么替换缓存中的key
+        //   if (_name === name && key !== cacheKey) {
+        //     pruneCacheEntry(cache, cacheKey, keys);
+        //     break;
+        //   }
+        // }
+
+        // console.log(keys);
+        // console.table(cache);
 
         vnode.data.keepAlive = true;
       }
