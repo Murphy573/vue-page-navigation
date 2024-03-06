@@ -1,43 +1,41 @@
-## vue-page-navigation
+# vue-page-navigation
 
 Vue 单页应用导航管理器，像原生 app 一样管理页面栈而不是销毁。
 
-
 ## 功能特性
 
-- 基于vue-router进行扩展，原有导航逻辑不变
-- 参考keep-alive源码，实现`include`、`exclude`、`max`属性
+- 基于 vue-router 进行扩展，原有导航逻辑不变
+- 参考 keep-alive 源码，实现`include`、`exclude`、`max`属性
 - `push`或者`forward`的时候重新渲染页面，`cache` 中会添加新渲染的页面
 - `back`或者`go（负数）的时候先前的页面不会渲染`，而是从`cache`中读取缓存，并且这些页面保留着之前的内容状态，并且把不用的页面从`cache`中移除
 - `replace`会更新`cache`中的当前页面
 - 回退到之前页面的时候有`activated`钩子函数出发
 - 支持浏览器的前进后退
 
-
 ## 安装和用法
 
 ### 安装
 
-``` bash
+```bash
 npm install vue-page-navigation
 ```
 
 ### 使用
 
-``` js
-import Vue from 'vue'
+```js
+import Vue from 'vue';
 import VuePageNavigation from 'vue-page-navigation';
 
 // vue-router实例必须传入
 Vue.use(VuePageNavigation, { router });
 ```
 
-``` vue
+```vue
 // App.vue
 <template>
   <div id="app">
     <VuePageNavigation>
-      <router-view ></router-view>
+      <router-view></router-view>
     </VuePageNavigation>
   </div>
 </template>
@@ -46,40 +44,43 @@ Vue.use(VuePageNavigation, { router });
 use `Vue.use` to install `vue-page-navigation
 使用之前需要注册插件
 
-``` js
+```js
 Vue.use(VuePageNavigation, options);
 ```
 
 Options 说明：
 
-| 属性    | 描述                      | 类型   | 默认值             |
-| ------- | ------------------------- | ------ | ------------------ |
-| router  | vue-router实例            | Object | -                  |
-| name    | VuePageNavigation组件名称 | String | 'VuePageNavigation |
-| keyName | 路径参数属性              | String | 'PNK'              |
+| 属性    | 描述                       | 类型   | 默认值             |
+| ------- | -------------------------- | ------ | ------------------ |
+| router  | vue-router 实例            | Object | -                  |
+| name    | VuePageNavigation 组件名称 | String | 'VuePageNavigation |
+| keyName | 路径参数属性               | String | 'PNK'              |
 
 注册的时候可以指定 VuePageStack 的名字和 keyName
 
-``` js
-Vue.use(VuePageNavigation, { router, name: 'VuePageNavigation', keyName: 'PNK' });
+```js
+Vue.use(VuePageNavigation, {
+  router,
+  name: 'VuePageNavigation',
+  keyName: 'PNK',
+});
 ```
 
 组件输入属性，与`keep-alive`相似
 
-| 属性    | 描述                 | 类型                  | 默认值 |
-| ------- | -------------------- | --------------------- | ------ |
-| include | 始终缓存的组件name   | String, RegExp, Array | -      |
-| exclude | 永远不缓存的组件name | String, RegExp, Array | -      |
-| max     | 缓存最大数量(LRU)    | String , Number       | 50     |
+| 属性    | 描述                  | 类型                  | 默认值 |
+| ------- | --------------------- | --------------------- | ------ |
+| include | 始终缓存的组件 name   | String, RegExp, Array | -      |
+| exclude | 永远不缓存的组件 name | String, RegExp, Array | -      |
+| max     | 缓存最大数量(LRU)     | String , Number       | 50     |
 
 使用组件可以指定输入属性
+
 ```vue
 <VuePageNavigation :inlcude="include" :exclude="exclude" :max="50">
   <router-view ></router-view>
 </VuePageNavigation>
 ```
-
-
 
 ## 相关说明
 
